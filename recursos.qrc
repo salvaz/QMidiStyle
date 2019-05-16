@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/new/Iconos">
+        <file alias="IconCerrar">Recursos/Button Close.png</file>
+        <file alias="IconSave">Recursos/save.png</file>
+        <file alias="IconSaveAs">Recursos/save_as.png</file>
+        <file alias="IconImportar">Recursos/addfile.ico</file>
+        <file alias="IconAbrir">Recursos/file.png</file>
+        <file alias="IconTabVisor">Recursos/music.ico</file>
+        <file alias="IconTabOpciones">Recursos/settings.ico</file>
+    </qresource>
+</RCC>
