@@ -7,5 +7,6 @@
         <file alias="IconAbrir">Recursos/file.png</file>
         <file alias="IconTabVisor">Recursos/music.ico</file>
         <file alias="IconTabOpciones">Recursos/settings.ico</file>
+        <file alias="IconApp">Recursos/Music2.ico</file>
     </qresource>
 </RCC>

@@ -9,7 +9,12 @@
 #include <QStatusBar>
 #include <QTabWidget>
 #include <QBoxLayout>
+#include <QGridLayout>
 #include <QApplication>
+#include <QGroupBox>
+#include <QComboBox>
+#include <QLabel>
+#include "HPMidiFile/HP_midifile.h"
 
 class VentanaPrincipal : public QMainWindow
 {
@@ -19,6 +24,10 @@ public:
     VentanaPrincipal(QWidget *parent = nullptr);
     ~VentanaPrincipal();
 private:
+// Variables globales
+    QString NombreFichero;
+    HP_MIDIFILE_MODULE *MidiFile;
+
 // Acciones
     QAction *openAction;
     QAction *importAction;
@@ -36,6 +45,11 @@ private:
     QWidget *TabOpciones;
     QBoxLayout *TabLayVisor;
     QBoxLayout *TabLayOpciones;
+// Controles de configuracion
+    QGridLayout *GridOpcionesDevices;
+    QGroupBox *GrupoDevices;
+    QComboBox *MidiDeviceIn;
+    QComboBox *MidiDeviceOut;
 
 // Funciones para crear el GUI
     void CrearAcciones (void);
@@ -44,10 +58,12 @@ private:
     void CrearGui (void);
     void CrearTabVisor (void);
     void CrearTabOpciones (void);
+    void RellenarDispositivos (void);
 private slots:
 //    void AbrirDocumento (void);
 //    void GuardarDocumento (void);
 //    void GuardarComoDocumento (void);
+    void ImportarEstilo (void);
     void CerrarPrograma (void);
 
 };

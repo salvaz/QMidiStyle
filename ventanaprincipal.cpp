@@ -1,4 +1,9 @@
 #include "ventanaprincipal.h"
+#include <QMessageBox>
+#include <QFileDialog>
+#include <iostream>
+#include <windows.h>
+#include "mmsystem.h"
 
 VentanaPrincipal::VentanaPrincipal(QWidget *parent)
     : QMainWindow(parent)
@@ -81,6 +86,10 @@ void VentanaPrincipal::CrearGui(void)
     MiTab->addTab(TabVisor,QIcon(":/Iconos/TabVisor"),"Visor");
     MiTab->addTab(TabOpciones,QIcon(":/Iconos/TabOpciones"),"Opciones");
 
+    QString TituloApp="Estilos Midi";
+    this->setWindowTitle(NombreFichero+" - "+TituloApp);
+
+    this->setWindowIcon(QIcon(":/new/Iconos/IconApp"));
     this->setCentralWidget(MiTab);
     this->setWindowState(Qt::WindowMaximized);
 }
@@ -95,13 +104,87 @@ void VentanaPrincipal::CrearTabVisor()
 
 void VentanaPrincipal::CrearTabOpciones()
 {
+    QLabel *label;
     TabOpciones=new QWidget();
+
+    GrupoDevices=new QGroupBox(tr("Seleccionar devices"),this);
+    GridOpcionesDevices=new QGridLayout();
+    label=new QLabel(tr("Dispositivo entrada :"),GrupoDevices);
+    GridOpcionesDevices->addWidget(label,0,0,Qt::AlignLeft);
+    MidiDeviceIn=new QComboBox(this);
+    GridOpcionesDevices->addWidget(MidiDeviceIn,0,1,Qt::AlignLeft);
+    label=new QLabel(tr("Dispositivo salida :"),GrupoDevices);
+    GridOpcionesDevices->addWidget(label,1,0,Qt::AlignLeft);
+    MidiDeviceOut=new QComboBox(this);
+    GridOpcionesDevices->addWidget(MidiDeviceOut,1,1,Qt::AlignLeft);
+    GrupoDevices->setLayout(GridOpcionesDevices);
+
     TabLayOpciones=new QBoxLayout(QBoxLayout::LeftToRight);
+    TabLayOpciones->addWidget(GrupoDevices);
     TabOpciones->setLayout(TabLayOpciones);
     MiTab->addTab(TabOpciones,QIcon(":/new/Iconos/IconTabOpciones"),"Opciones");
+
+    RellenarDispositivos();
 }
 
 void VentanaPrincipal::CerrarPrograma(void)
 {
     qApp->quit();
+}
+
+void VentanaPrincipal::ImportarEstilo()
+{
+    QMessageBox msgBox;
+
+    NombreFichero=QFileDialog::getOpenFileName(this,tr("Importar estilo yamaha psr"), ".", "all (*.*);;Estilo (*.sty)");
+    if(NombreFichero.isEmpty())
+    {
+        msgBox.setText(tr("No se ha seleccionado ningún fichero."));
+        msgBox.exec();
+    }
+    else {
+        QFile fichero(NombreFichero);
+
+
+    }
+}
+
+void VentanaPrincipal::RellenarDispositivos()
+{
+    HP_DEVICE *devices;
+    int no_devices;
+    UINT result;
+    QMessageBox msgBox;
+    QString name;
+
+    result = HP_GetMIDIDevices(&devices,&no_devices);
+    if (result != HP_ERR_NONE)
+    {
+       msgBox.setText(HP_ErrText(int(result)));
+       return;
+    }
+
+    for (int kk=0; kk<no_devices; kk++)
+    {
+       name = devices[kk].device_name;
+        MidiDeviceOut->addItem(name,devices[kk].device_id);
+    }
+    HP_Delete(devices);
+
+    unsigned int devCount = midiInGetNumDevs();
+    MIDIINCAPS inputCapabilities;
+    for (unsigned int i = 0; i < devCount; i++) {
+        midiInGetDevCaps(i, &inputCapabilities, sizeof(inputCapabilities));
+        name=QString::fromWCharArray(inputCapabilities.szPname);
+        MidiDeviceIn->addItem(name,inputCapabilities.wPid);
+    }
+    MidiDeviceOut->clear();
+    unsigned int devoutCount = midiOutGetNumDevs();
+    MIDIOUTCAPS outputCapabilities;
+    for (unsigned int i = 0; i < devoutCount; i++) {
+        midiOutGetDevCaps(i, &outputCapabilities, sizeof(outputCapabilities));
+        name=QString::fromWCharArray(outputCapabilities.szPname);
+        MidiDeviceOut->addItem(name,outputCapabilities.wPid);
+    }
+
 }

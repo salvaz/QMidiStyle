@@ -38,3 +38,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     recursos.qrc
+
+LIBS += -lwinmm
+win32: LIBS += -L$$PWD/HPMidiFile -lHP_midifile
+INCLUDEPATH += $$PWD/HPMidiFile
+
