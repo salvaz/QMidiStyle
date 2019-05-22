@@ -2,21 +2,20 @@
 #include <QMessageBox>
 #include <QFileDialog>
 #include <iostream>
-#include <windows.h>
-#include "mmsystem.h"
 
 VentanaPrincipal::VentanaPrincipal(QWidget *parent)
     : QMainWindow(parent)
 {
+    MiDevice=new QMidiDevice();
     CrearAcciones();
     CrearBarraHerramientas();
     CrearMenu();
     CrearGui();
+
 }
 
 VentanaPrincipal::~VentanaPrincipal()
 {
-
 }
 
 void VentanaPrincipal::CrearAcciones(void)
@@ -31,7 +30,7 @@ void VentanaPrincipal::CrearAcciones(void)
     importAction->setIcon(QIcon(":/new/Iconos/IconImportar"));
     importAction->setShortcut(QKeySequence::Open);
     importAction->setStatusTip(tr("Importar un estilo"));
-//    connect(importAction, &QAction::triggered, this, &VentanaPrincipal::ImportarDocumento);
+    connect(importAction, &QAction::triggered, this, &VentanaPrincipal::ImportarEstilo);
 
     saveAction = new QAction(tr("&Guardar"), this);
     saveAction->setIcon(QIcon(":/new/Iconos/IconSave"));
@@ -147,44 +146,25 @@ void VentanaPrincipal::ImportarEstilo()
 
 
     }
+
+
 }
 
 void VentanaPrincipal::RellenarDispositivos()
 {
-    HP_DEVICE *devices;
-    int no_devices;
-    UINT result;
-    QMessageBox msgBox;
-    QString name;
-
-    result = HP_GetMIDIDevices(&devices,&no_devices);
-    if (result != HP_ERR_NONE)
-    {
-       msgBox.setText(HP_ErrText(int(result)));
-       return;
-    }
-
-    for (int kk=0; kk<no_devices; kk++)
-    {
-       name = devices[kk].device_name;
-        MidiDeviceOut->addItem(name,devices[kk].device_id);
-    }
-    HP_Delete(devices);
-
-    unsigned int devCount = midiInGetNumDevs();
-    MIDIINCAPS inputCapabilities;
-    for (unsigned int i = 0; i < devCount; i++) {
-        midiInGetDevCaps(i, &inputCapabilities, sizeof(inputCapabilities));
-        name=QString::fromWCharArray(inputCapabilities.szPname);
-        MidiDeviceIn->addItem(name,inputCapabilities.wPid);
-    }
+    MiDevice->EscanearDispositivos();
+    unsigned long NumDevices;
+    NumDevices=MiDevice->GetNumDispositivosOut();
     MidiDeviceOut->clear();
-    unsigned int devoutCount = midiOutGetNumDevs();
-    MIDIOUTCAPS outputCapabilities;
-    for (unsigned int i = 0; i < devoutCount; i++) {
-        midiOutGetDevCaps(i, &outputCapabilities, sizeof(outputCapabilities));
-        name=QString::fromWCharArray(outputCapabilities.szPname);
-        MidiDeviceOut->addItem(name,outputCapabilities.wPid);
+    for (unsigned long kk=0;kk<NumDevices;kk++)
+    {
+        MidiDeviceOut->addItem(MiDevice->GetDispositivoOutName(kk));
     }
-
+    NumDevices=MiDevice->GetNumDispositivosIn();
+    MidiDeviceIn->clear();
+    for (unsigned long kk=0;kk<NumDevices;kk++)
+    {
+        MidiDeviceIn->addItem(MiDevice->GetDispositivoInName(kk));
+    }
 }
+

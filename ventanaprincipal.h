@@ -14,7 +14,11 @@
 #include <QGroupBox>
 #include <QComboBox>
 #include <QLabel>
-#include "HPMidiFile/HP_midifile.h"
+#include <QListView>
+#include "qmididevice.h"
+
+
+
 
 class VentanaPrincipal : public QMainWindow
 {
@@ -26,7 +30,7 @@ public:
 private:
 // Variables globales
     QString NombreFichero;
-    HP_MIDIFILE_MODULE *MidiFile;
+    QMidiDevice *MiDevice;
 
 // Acciones
     QAction *openAction;
@@ -45,11 +49,20 @@ private:
     QWidget *TabOpciones;
     QBoxLayout *TabLayVisor;
     QBoxLayout *TabLayOpciones;
+    QBoxLayout *TabEstilo;
 // Controles de configuracion
     QGridLayout *GridOpcionesDevices;
     QGroupBox *GrupoDevices;
     QComboBox *MidiDeviceIn;
     QComboBox *MidiDeviceOut;
+// Controles de TabEstilo
+    QGridLayout *GridTabEstilo;
+    QGroupBox *GrupoEstilo;
+    QComboBox *ComboEstilo;
+    QComboBox *ComboTrack;
+    QListView *ViewEvents;
+
+
 
 // Funciones para crear el GUI
     void CrearAcciones (void);

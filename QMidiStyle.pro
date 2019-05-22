@@ -26,9 +26,21 @@ CONFIG += c++11
 
 SOURCES += \
         main.cpp \
+        qmididevice.cpp \
+        qmidievent.cpp \
+        qmidimessage.cpp \
+        qmidiplayer.cpp \
+        qmidisequence.cpp \
+        qmiditrack.cpp \
         ventanaprincipal.cpp
 
 HEADERS += \
+        qmididevice.h \
+        qmidievent.h \
+        qmidimessage.h \
+        qmidiplayer.h \
+        qmidisequence.h \
+        qmiditrack.h \
         ventanaprincipal.h
 
 # Default rules for deployment.
@@ -40,6 +52,6 @@ RESOURCES += \
     recursos.qrc
 
 LIBS += -lwinmm
-win32: LIBS += -L$$PWD/HPMidiFile -lHP_midifile
-INCLUDEPATH += $$PWD/HPMidiFile
+# LIBS += -L$$PWD/HPMidiFile -lHP_midifile
+# INCLUDEPATH += $$PWD/HPMidiFile
 
