@@ -8,6 +8,10 @@ class QMidiTrack
 {
 public:
     QMidiTrack();
+    ~QMidiTrack();
+    void AddEvento(QMidiMessage MiEvento);
+    void SetNombre(QString name);
+    QString GetNombre(void);
     void OrdenarEventos (void);
 private:
     QString Nombre;

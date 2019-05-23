@@ -27,6 +27,7 @@ CONFIG += c++11
 SOURCES += \
         main.cpp \
         qmididevice.cpp \
+        qmidiestilo.cpp \
         qmidievent.cpp \
         qmidimessage.cpp \
         qmidiplayer.cpp \
@@ -36,6 +37,7 @@ SOURCES += \
 
 HEADERS += \
         qmididevice.h \
+        qmidiestilo.h \
         qmidievent.h \
         qmidimessage.h \
         qmidiplayer.h \

@@ -82,8 +82,7 @@ void VentanaPrincipal::CrearGui(void)
     CrearTabVisor();
 
     CrearTabOpciones();
-    MiTab->addTab(TabVisor,QIcon(":/Iconos/TabVisor"),"Visor");
-    MiTab->addTab(TabOpciones,QIcon(":/Iconos/TabOpciones"),"Opciones");
+    CrearTabEstilos();
 
     QString TituloApp="Estilos Midi";
     this->setWindowTitle(NombreFichero+" - "+TituloApp);
@@ -126,6 +125,37 @@ void VentanaPrincipal::CrearTabOpciones()
     RellenarDispositivos();
 }
 
+void VentanaPrincipal::CrearTabEstilos()
+{
+    QLabel *label;
+    TabEstilo=new QWidget();
+
+    GrupoEstilo=new QGroupBox(tr("Propiedades del estilo"),this);
+    GridTabEstilo=new QGridLayout();
+    label=new QLabel(tr("Estilo :"),GrupoEstilo);
+    GridTabEstilo->addWidget(label,0,0,Qt::AlignLeft);
+    ComboEstilo=new QComboBox(this);
+    GridTabEstilo->addWidget(ComboEstilo,0,1,Qt::AlignLeft);
+    label=new QLabel(tr("Variación :"),GrupoEstilo);
+    GridTabEstilo->addWidget(label,1,0,Qt::AlignLeft);
+    ComboVariacion=new QComboBox(this);
+    GridTabEstilo->addWidget(ComboVariacion,1,1,Qt::AlignLeft);
+    label=new QLabel(tr("Track :"),GrupoEstilo);
+    GridTabEstilo->addWidget(label,2,0,Qt::AlignLeft);
+    ComboTrack=new QComboBox(this);
+    GridTabEstilo->addWidget(ComboTrack,2,1,Qt::AlignLeft);
+    label=new QLabel(tr("Eventos MIDI :"),GrupoEstilo);
+    GridTabEstilo->addWidget(label,0,2,Qt::AlignLeft);
+    ViewEvents=new QListView(this);
+    GridTabEstilo->addWidget(ViewEvents,1,2,Qt::AlignLeft);
+    GrupoEstilo->setLayout(GridTabEstilo);
+
+    TabLayEstilo=new QBoxLayout(QBoxLayout::LeftToRight);
+    TabLayEstilo->addWidget(GrupoEstilo);
+    TabEstilo->setLayout(TabLayEstilo);
+    MiTab->addTab(TabEstilo,QIcon(":/new/Iconos/IconTabEstilos"),"Estilos");
+}
+
 void VentanaPrincipal::CerrarPrograma(void)
 {
     qApp->quit();
@@ -134,6 +164,7 @@ void VentanaPrincipal::CerrarPrograma(void)
 void VentanaPrincipal::ImportarEstilo()
 {
     QMessageBox msgBox;
+    QMidiEstilo miEstilo;
 
     NombreFichero=QFileDialog::getOpenFileName(this,tr("Importar estilo yamaha psr"), ".", "all (*.*);;Estilo (*.sty)");
     if(NombreFichero.isEmpty())
@@ -142,9 +173,8 @@ void VentanaPrincipal::ImportarEstilo()
         msgBox.exec();
     }
     else {
-        QFile fichero(NombreFichero);
-
-
+        if (miEstilo.ImportarEstiloPSR(NombreFichero))
+            ListaEstilos.append(miEstilo);
     }
 
 

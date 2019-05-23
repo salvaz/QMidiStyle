@@ -15,7 +15,9 @@
 #include <QComboBox>
 #include <QLabel>
 #include <QListView>
+#include <QList>
 #include "qmididevice.h"
+#include "qmidiestilo.h"
 
 
 
@@ -31,6 +33,7 @@ private:
 // Variables globales
     QString NombreFichero;
     QMidiDevice *MiDevice;
+    QList<QMidiEstilo> ListaEstilos;
 
 // Acciones
     QAction *openAction;
@@ -47,9 +50,10 @@ private:
     QTabWidget *MiTab;
     QWidget *TabVisor;
     QWidget *TabOpciones;
+    QWidget *TabEstilo;
     QBoxLayout *TabLayVisor;
     QBoxLayout *TabLayOpciones;
-    QBoxLayout *TabEstilo;
+    QBoxLayout *TabLayEstilo;
 // Controles de configuracion
     QGridLayout *GridOpcionesDevices;
     QGroupBox *GrupoDevices;
@@ -59,6 +63,7 @@ private:
     QGridLayout *GridTabEstilo;
     QGroupBox *GrupoEstilo;
     QComboBox *ComboEstilo;
+    QComboBox *ComboVariacion;
     QComboBox *ComboTrack;
     QListView *ViewEvents;
 
@@ -71,6 +76,7 @@ private:
     void CrearGui (void);
     void CrearTabVisor (void);
     void CrearTabOpciones (void);
+    void CrearTabEstilos (void);
     void RellenarDispositivos (void);
 private slots:
 //    void AbrirDocumento (void);
