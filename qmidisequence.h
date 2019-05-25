@@ -8,11 +8,11 @@ class QMidiSequence
 public:
     QMidiSequence();
     ~QMidiSequence();
-    void AddTrack(QMidiTrack MiTrack);
+    void AddTrack(QMidiTrack &MiTrack);
     void SetNombre(QString name);
     QString GetNombre (void);
-protected:
     QList <QMidiTrack> ListaTrack;
+protected:
     QString Nombre;
 };
 

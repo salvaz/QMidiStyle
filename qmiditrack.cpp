@@ -10,7 +10,7 @@ QMidiTrack::~QMidiTrack()
     ListaEventos.clear();
 }
 
-void QMidiTrack::AddEvento(QMidiMessage MiEvento)
+void QMidiTrack::AddEvento(QMidiMessage &MiEvento)
 {
     ListaEventos.append(MiEvento);
 }

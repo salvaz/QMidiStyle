@@ -146,14 +146,25 @@ void VentanaPrincipal::CrearTabEstilos()
     GridTabEstilo->addWidget(ComboTrack,2,1,Qt::AlignLeft);
     label=new QLabel(tr("Eventos MIDI :"),GrupoEstilo);
     GridTabEstilo->addWidget(label,0,2,Qt::AlignLeft);
-    ViewEvents=new QListView(this);
-    GridTabEstilo->addWidget(ViewEvents,1,2,Qt::AlignLeft);
+    TablaEventos=new QTableView(this);
+    GridTabEstilo->addWidget(TablaEventos,1,2,Qt::AlignLeft);
     GrupoEstilo->setLayout(GridTabEstilo);
 
     TabLayEstilo=new QBoxLayout(QBoxLayout::LeftToRight);
     TabLayEstilo->addWidget(GrupoEstilo);
     TabEstilo->setLayout(TabLayEstilo);
     MiTab->addTab(TabEstilo,QIcon(":/new/Iconos/IconTabEstilos"),"Estilos");
+
+    connect(ComboEstilo, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &VentanaPrincipal::ElegidoEstilo);
+    connect(ComboVariacion, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &VentanaPrincipal::ElegidaVariacion);
+    connect(ComboTrack, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &VentanaPrincipal::ElegidoTrack);
+
+    QStringList Cabecera;
+
+    Cabecera << "Orden" << "Tiempo" << "Tipo" << "Descripcion" << "Datos";
+    TablaEventosModel=new QStandardItemModel();
+    TablaEventosModel->setHorizontalHeaderLabels(Cabecera);
+    TablaEventos->setModel(TablaEventosModel);
 }
 
 void VentanaPrincipal::CerrarPrograma(void)
@@ -174,7 +185,11 @@ void VentanaPrincipal::ImportarEstilo()
     }
     else {
         if (miEstilo.ImportarEstiloPSR(NombreFichero))
+        {
+            miEstilo.setNombre(NombreFichero);
             ListaEstilos.append(miEstilo);
+            RefrescarEstilos();
+        }
     }
 
 
@@ -198,3 +213,54 @@ void VentanaPrincipal::RellenarDispositivos()
     }
 }
 
+void VentanaPrincipal::ElegidoEstilo (int indice)
+{
+    QString name;
+
+    EstiloElegido=indice;
+    ComboVariacion->clear();
+    for (int kk=0;kk<ListaEstilos.at(EstiloElegido).ListaVariaciones.size();kk++)
+    {
+        name=ListaEstilos[EstiloElegido].ListaVariaciones[kk].GetNombre();
+        ComboVariacion->addItem(name);
+    }
+}
+
+void VentanaPrincipal::ElegidaVariacion (int indice)
+{
+    QString name;
+
+    VariacionElegida=indice;
+    ComboTrack->clear();
+    for (int kk=0;kk<ListaEstilos.at(EstiloElegido).ListaVariaciones.at(VariacionElegida).ListaTrack.size();kk++)
+    {
+        name=ListaEstilos[EstiloElegido].ListaVariaciones[VariacionElegida].ListaTrack[kk].GetNombre();
+        ComboTrack->addItem(name);
+    }
+}
+
+void VentanaPrincipal::ElegidoTrack(int indice)
+{
+    QString name;
+
+    TrackElegido=indice;
+    TablaEventos->reset();
+    for (int kk=0;kk<ListaEstilos.at(EstiloElegido).ListaVariaciones.at(VariacionElegida).ListaTrack.at(TrackElegido).ListaEventos.size();kk++)
+    {
+        name=ListaEstilos[EstiloElegido].ListaVariaciones[VariacionElegida].ListaTrack[kk].GetNombre();
+        TablaEventos->reset();
+    }
+}
+
+void VentanaPrincipal::RefrescarEstilos()
+{
+    QString nombre;
+
+    ComboEstilo->clear();
+    for (int kk=0;kk<ListaEstilos.size();kk++)
+    {
+        nombre=ListaEstilos[kk].getNombre();
+        ComboEstilo->addItem(nombre);
+    }
+    EstiloElegido=-1;
+}

@@ -10,7 +10,7 @@ QMidiSequence::~QMidiSequence()
     ListaTrack.clear();
 }
 
-void QMidiSequence::AddTrack(QMidiTrack MiTrack)
+void QMidiSequence::AddTrack(QMidiTrack &MiTrack)
 {
     ListaTrack.append(MiTrack);
 }

@@ -30,8 +30,10 @@ SOURCES += \
         qmidiestilo.cpp \
         qmidievent.cpp \
         qmidimessage.cpp \
+        qmidimetaevent.cpp \
         qmidiplayer.cpp \
         qmidisequence.cpp \
+        qmidisysexevent.cpp \
         qmiditrack.cpp \
         ventanaprincipal.cpp
 
@@ -40,8 +42,10 @@ HEADERS += \
         qmidiestilo.h \
         qmidievent.h \
         qmidimessage.h \
+        qmidimetaevent.h \
         qmidiplayer.h \
         qmidisequence.h \
+        qmidisysexevent.h \
         qmiditrack.h \
         ventanaprincipal.h
 

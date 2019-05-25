@@ -9,13 +9,13 @@ class QMidiTrack
 public:
     QMidiTrack();
     ~QMidiTrack();
-    void AddEvento(QMidiMessage MiEvento);
+    void AddEvento(QMidiMessage &MiEvento);
     void SetNombre(QString name);
     QString GetNombre(void);
     void OrdenarEventos (void);
+    QList <QMidiMessage> ListaEventos;
 private:
     QString Nombre;
-    QList <QMidiMessage> ListaEventos;
 };
 
 #endif // QMIDITRACK_H

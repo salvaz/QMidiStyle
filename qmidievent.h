@@ -3,36 +3,13 @@
 
 #include "qmidimessage.h"
 
-class NoteOffEvent : public QMidiMessage
+class QMidiNormalEvent:public QMidiMessage
 {
-    // attributes
 public:
-    NoteOffEvent();	// Default Constructor
-    NoteOffEvent(int resulting_time,unsigned char* event_data,int event_data_length);
-    const NoteOffEvent& operator= (const NoteOffEvent& noev); // Assignment Operator
-    virtual ~NoteOffEvent();
-    int Nota();	// note value
-    void setNota(int new_note);
-    void setCanal(int new_chan);
-
-    QMidiMessage* AsociadaNoteOn;
-};
-
-class NoteOnEvent : public QMidiMessage
-{
-    // attributes
-public:
-    NoteOnEvent();	// Default Constructor
-    NoteOnEvent(int resulting_time,unsigned char* event_data,int event_data_length);
-    const NoteOnEvent& operator= (const NoteOnEvent& noev); // Assignment Operator
-    virtual ~NoteOnEvent();
-    int Nota();	// note value
-    void setNota(int new_note);
-    void setCanal(int new_chan);
-    int Velocidad();
-    void setVelocidad(int vel);
-
-    QMidiMessage* AsociadaNotaOff;
+    QMidiNormalEvent();
+    QMidiNormalEvent(ulong deltatime, uchar *eventData, uint dataLongitud);
+    const QMidiNormalEvent& operator=(const QMidiNormalEvent&noev);
+    virtual ~QMidiNormalEvent();
 };
 
 #endif // QMIDIEVENT_H

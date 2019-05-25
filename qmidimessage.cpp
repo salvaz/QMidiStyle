@@ -2,24 +2,24 @@
 
 QMidiMessage::QMidiMessage()
 {
-    Tipo=HP_TYPE_NONE;
+    Tipo=QMIDI_TIPO_NOEVENT;
     TiempoAbsoluto=0;
     event_data=nullptr;
-    event_data_length=-1;
-    Canal=HP_NO_CHAN;
+    event_data_length=0;
+    Canal=QMIDI_NO_CANAL;
     Elegido=0;
 }
 
-QMidiMessage::QMidiMessage(int MiTiempoAbsoluto,unsigned char* Mi_event_data,int Mi_event_data_length)
+QMidiMessage::QMidiMessage(ulong MiTiempoAbsoluto,uchar *Mi_event_data, uint Mi_event_data_length)
 {
+    Tipo=QMIDI_TIPO_NORMALEVENT;
     TiempoAbsoluto=MiTiempoAbsoluto;
     event_data_length=Mi_event_data_length;
-    event_data=new unsigned char[static_cast<unsigned int>(event_data_length)];
-    for (int kk=0;kk<event_data_length;kk++)
+    for (uint kk=0;kk<event_data_length;kk++)
     {
-        event_data[kk]=Mi_event_data[kk];
+        event_data[kk]=static_cast<char>(Mi_event_data[kk]);
     }
-    Canal=HP_NO_CHAN;
+    Canal=QMIDI_NO_CANAL;
     Elegido=0;
 }
 
@@ -30,11 +30,10 @@ const QMidiMessage& QMidiMessage::operator= (const QMidiMessage& mev)
         return *this;
     }
 
-    Tipo = mev.Tipo;
+    Tipo=mev.Tipo;
     TiempoAbsoluto=mev.TiempoAbsoluto;
     event_data_length=mev.event_data_length;
-    event_data=new unsigned char[static_cast<unsigned int>(event_data_length)];
-    for (int kk=0;kk<event_data_length;kk++)
+    for (uint kk=0;kk<event_data_length;kk++)
     {
         event_data[kk]=mev.event_data[kk];
     }
@@ -45,28 +44,33 @@ const QMidiMessage& QMidiMessage::operator= (const QMidiMessage& mev)
 
 QMidiMessage::~QMidiMessage()
 {
-    delete[] event_data;
 }
 
-void QMidiMessage::CambiarCanal(int canal)
+void QMidiMessage::CambiarCanal(uint canal)
 {
-    if (Canal == HP_NO_CHAN) return;
     Canal = canal;
-    event_data[0] &= 0xf0;
-    event_data[0] |= (Canal & 0x0f);
+    event_data[0] = event_data[0] & char(0xf0);
+    event_data[0] = event_data[0] | char(Canal & 0x0f);
 }
 
-unsigned int QMidiMessage::Sub1Type()
+uint QMidiMessage::Sub1Type()
 {
     return(Tipo & 0xff);
 }
 
-unsigned int QMidiMessage::Sub2Type()
+uint QMidiMessage::Sub2Type()
 {
     return((Tipo>>8) & 0xff);
 }
 
-unsigned int QMidiMessage::Sub3Type()
+uint QMidiMessage::Sub3Type()
 {
     return((Tipo>>16) & 0xff);
+}
+
+QString QMidiMessage::getNombre()
+{
+    QString nombre;
+
+    return nombre;
 }

@@ -14,7 +14,8 @@
 #include <QGroupBox>
 #include <QComboBox>
 #include <QLabel>
-#include <QListView>
+#include <QTableView>
+#include <QStandardItemModel>
 #include <QList>
 #include "qmididevice.h"
 #include "qmidiestilo.h"
@@ -34,6 +35,9 @@ private:
     QString NombreFichero;
     QMidiDevice *MiDevice;
     QList<QMidiEstilo> ListaEstilos;
+    int EstiloElegido;
+    int VariacionElegida;
+    int TrackElegido;
 
 // Acciones
     QAction *openAction;
@@ -65,8 +69,10 @@ private:
     QComboBox *ComboEstilo;
     QComboBox *ComboVariacion;
     QComboBox *ComboTrack;
-    QListView *ViewEvents;
+    QTableView *TablaEventos;
+    QStandardItemModel *TablaEventosModel;
 
+    void RefrescarEstilos (void);
 
 
 // Funciones para crear el GUI
@@ -84,6 +90,9 @@ private slots:
 //    void GuardarComoDocumento (void);
     void ImportarEstilo (void);
     void CerrarPrograma (void);
+    void ElegidoEstilo (int indice);
+    void ElegidaVariacion (int indice);
+    void ElegidoTrack(int indice);
 
 };
 

@@ -10,9 +10,18 @@ public:
     ~QMidiEstilo();
     void AddMidiSequence (QMidiSequence MiSecuencia);
     bool ImportarEstiloPSR (QString filename);
-protected:
+    QString getNombre(void);
+    void setNombre(QString name);
     QList <QMidiSequence> ListaVariaciones;
-    unsigned long ByteArrayToULong (QByteArray data);
+protected:
+    QString Nombre;
+    QMidiTrack LeerTrackFromData (uchar *data,ulong longitud);
+    uint LeerTrackEvent(ulong TiempoTotal,uchar *data,QMidiTrack &miTrack);
+    uint LeerTrackMetaEvent (ulong TiempoTotal, uchar *data, QMidiTrack &miTrack);
+    uint LeerTrackSysExEvent (ulong TiempoTotal,uchar *data,QMidiTrack &miTrack);
+    ulong ByteArrayToULong (QByteArray data);
+    ulong ConvertVarLenToLong (uchar *bufer);
+    ulong ConvertVarLenToLong2 (uchar *bufer,uint &bytesLeidos);
 
 };
 
